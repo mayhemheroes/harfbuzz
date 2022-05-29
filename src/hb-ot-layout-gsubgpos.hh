@@ -627,6 +627,7 @@ struct hb_ot_apply_context_t :
   hb_buffer_t *buffer;
   recurse_func_t recurse_func;
   const GDEF &gdef;
+  hb_coverage_cache_t *coverage_cache = nullptr;
   const VariationStore &var_store;
   VariationStore::cache_t *var_store_cache;
 
