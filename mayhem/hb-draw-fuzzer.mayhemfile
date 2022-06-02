@@ -1,0 +1,4 @@
+project: PROJECT
+target: hb-draw-fuzzer
+cmds:
+- cmd: /out/hb-draw-fuzzer
