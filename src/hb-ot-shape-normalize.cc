@@ -29,7 +29,7 @@
 #ifndef HB_NO_OT_SHAPE
 
 #include "hb-ot-shape-normalize.hh"
-#include "hb-ot-shape-complex.hh"
+#include "hb-ot-shaper.hh"
 #include "hb-ot-shape.hh"
 
 
@@ -69,7 +69,7 @@
  *   - When a font does not support a character but supports its canonical
  *     decomposition, well, use the decomposition.
  *
- *   - The complex shapers can customize the compose and decompose functions to
+ *   - The shapers can customize the compose and decompose functions to
  *     offload some of their requirements to the normalizer.  For example, the
  *     Indic shaper may want to disallow recomposing of two matras.
  */
@@ -395,7 +395,7 @@ _hb_ot_shape_normalize (const hb_ot_shape_plan_t *plan,
 	  break;
 
       /* We are going to do a O(n^2).  Only do this if the sequence is short. */
-      if (end - i > HB_OT_SHAPE_COMPLEX_MAX_COMBINING_MARKS) {
+      if (end - i > HB_OT_SHAPE_MAX_COMBINING_MARKS) {
 	i = end;
 	continue;
       }

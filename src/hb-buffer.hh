@@ -71,11 +71,11 @@ enum hb_buffer_scratch_flags_t {
   HB_BUFFER_SCRATCH_FLAG_HAS_CGJ			= 0x00000010u,
   HB_BUFFER_SCRATCH_FLAG_HAS_GLYPH_FLAGS		= 0x00000020u,
 
-  /* Reserved for complex shapers' internal use. */
-  HB_BUFFER_SCRATCH_FLAG_COMPLEX0			= 0x01000000u,
-  HB_BUFFER_SCRATCH_FLAG_COMPLEX1			= 0x02000000u,
-  HB_BUFFER_SCRATCH_FLAG_COMPLEX2			= 0x04000000u,
-  HB_BUFFER_SCRATCH_FLAG_COMPLEX3			= 0x08000000u,
+  /* Reserved for shapers' internal use. */
+  HB_BUFFER_SCRATCH_FLAG_SHAPER0			= 0x01000000u,
+  HB_BUFFER_SCRATCH_FLAG_SHAPER1			= 0x02000000u,
+  HB_BUFFER_SCRATCH_FLAG_SHAPER2			= 0x04000000u,
+  HB_BUFFER_SCRATCH_FLAG_SHAPER3			= 0x08000000u,
 };
 HB_MARK_AS_FLAG_T (hb_buffer_scratch_flags_t);
 
@@ -186,7 +186,7 @@ struct hb_buffer_t
 #ifndef HB_NDEBUG
     unsigned int end = start + count;
     assert (end <= 8);
-    unsigned int bits = (1u<<end) - (1u<<start);
+    HB_UNUSED unsigned int bits = (1u<<end) - (1u<<start);
     assert (bits == (allocated_var_bits & bits));
 #endif
   }
