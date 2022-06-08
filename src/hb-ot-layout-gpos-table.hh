@@ -2882,7 +2882,7 @@ struct PosLookupSubTable
 
 struct PosLookup : Lookup
 {
-  typedef struct PosLookupSubTable SubTable;
+  using SubTable = PosLookupSubTable;
 
   const SubTable& get_subtable (unsigned int i) const
   { return Lookup::get_subtable<SubTable> (i); }
@@ -2918,7 +2918,6 @@ struct PosLookup : Lookup
       c->set_lookup_inactive (this_index);
       return hb_closure_lookups_context_t::default_return_value ();
     }
-    c->set_recurse_func (dispatch_closure_lookups_recurse_func);
 
     hb_closure_lookups_context_t::return_t ret = dispatch (c);
     return ret;
@@ -2931,12 +2930,8 @@ struct PosLookup : Lookup
     dispatch (&c);
   }
 
-  static inline bool apply_recurse_func (hb_ot_apply_context_t *c, unsigned int lookup_index);
-
   template <typename context_t>
   static typename context_t::return_t dispatch_recurse_func (context_t *c, unsigned int lookup_index);
-
-  HB_INTERNAL static hb_closure_lookups_context_t::return_t dispatch_closure_lookups_recurse_func (hb_closure_lookups_context_t *c, unsigned this_index);
 
   template <typename context_t, typename ...Ts>
   typename context_t::return_t dispatch (context_t *c, Ts&&... ds) const
@@ -2957,6 +2952,8 @@ struct PosLookup : Lookup
 struct GPOS : GSUBGPOS
 {
   static constexpr hb_tag_t tableTag = HB_OT_TAG_GPOS;
+
+  using Lookup = PosLookup;
 
   const PosLookup& get_lookup (unsigned int i) const
   { return static_cast<const PosLookup &> (GSUBGPOS::get_lookup (i)); }
@@ -3122,13 +3119,16 @@ template <typename context_t>
   return l.dispatch (c);
 }
 
-/*static*/ inline hb_closure_lookups_context_t::return_t PosLookup::dispatch_closure_lookups_recurse_func (hb_closure_lookups_context_t *c, unsigned this_index)
+template <>
+inline hb_closure_lookups_context_t::return_t
+PosLookup::dispatch_recurse_func<hb_closure_lookups_context_t> (hb_closure_lookups_context_t *c, unsigned this_index)
 {
   const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (this_index);
   return l.closure_lookups (c, this_index);
 }
 
-/*static*/ bool PosLookup::apply_recurse_func (hb_ot_apply_context_t *c, unsigned int lookup_index)
+template <>
+inline bool PosLookup::dispatch_recurse_func<hb_ot_apply_context_t> (hb_ot_apply_context_t *c, unsigned int lookup_index)
 {
   const PosLookup &l = c->face->table.GPOS.get_relaxed ()->table->get_lookup (lookup_index);
   unsigned int saved_lookup_props = c->lookup_props;
