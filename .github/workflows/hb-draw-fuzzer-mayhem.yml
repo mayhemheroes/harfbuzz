@@ -48,8 +48,3 @@ jobs:
         mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
         args: --image ${{ steps.meta.outputs.tags }} --cmd /out/hb-draw-fuzzer 
           --target hb-draw-fuzzer --file mayhem/hb-draw-fuzzer.mayhemfile
-        sarif-output: sarif
-    - name: Upload SARIF file(s)
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: sarif
