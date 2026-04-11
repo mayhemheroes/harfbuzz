@@ -1,0 +1,5 @@
+project: harfbuzz
+target: hb-subset-fuzzer
+
+cmds:
+- cmd: /out/hb-subset-fuzzer

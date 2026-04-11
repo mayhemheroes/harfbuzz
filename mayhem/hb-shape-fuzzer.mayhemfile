@@ -1,0 +1,5 @@
+project: harfbuzz
+target: hb-shape-fuzzer
+
+cmds:
+- cmd: /out/hb-shape-fuzzer
