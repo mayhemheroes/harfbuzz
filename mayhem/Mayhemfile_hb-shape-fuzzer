@@ -1,0 +1,10 @@
+project: harfbuzz
+target: hb-shape-fuzzer
+
+cmds:
+  - cmd: /mayhem/hb-shape-fuzzer
+    libfuzzer: true
+
+# OSS-Fuzz seeds the shape fuzzer with the shared font corpus; test/fuzzing/fonts is the in-tree slice.
+testsuite:
+  - file:///mayhem/test/fuzzing/fonts

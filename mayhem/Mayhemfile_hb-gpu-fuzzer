@@ -1,0 +1,11 @@
+project: harfbuzz
+target: hb-gpu-fuzzer
+
+cmds:
+  - cmd: /mayhem/hb-gpu-fuzzer
+    libfuzzer: true
+
+# OSS-Fuzz seeds the gpu fuzzer with the shared font corpus (same as shape/raster/vector/subset).
+# test/fuzzing/fonts is the in-tree slice of that corpus.
+testsuite:
+  - file:///mayhem/test/fuzzing/fonts

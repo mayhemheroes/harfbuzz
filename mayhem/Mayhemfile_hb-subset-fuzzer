@@ -1,0 +1,12 @@
+project: harfbuzz
+target: hb-subset-fuzzer
+
+cmds:
+  - cmd: /mayhem/hb-subset-fuzzer
+    libfuzzer: true
+
+# OSS-Fuzz seeds the subset fuzzer with the shared font corpus PLUS the subset-specific fonts;
+# both dirs are present in-tree (meson's fonts_glob + subset_fonts_glob).
+testsuite:
+  - file:///mayhem/test/fuzzing/fonts
+  - file:///mayhem/test/subset/data/fonts

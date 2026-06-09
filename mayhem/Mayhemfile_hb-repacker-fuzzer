@@ -1,0 +1,11 @@
+project: harfbuzz
+target: hb-repacker-fuzzer
+
+cmds:
+  - cmd: /mayhem/hb-repacker-fuzzer
+    libfuzzer: true
+
+# The repacker fuzzer takes serialized object-graphs, NOT fonts — OSS-Fuzz seeds it from
+# test/fuzzing/graphs (its own corpus), which is present in-tree.
+testsuite:
+  - file:///mayhem/test/fuzzing/graphs
